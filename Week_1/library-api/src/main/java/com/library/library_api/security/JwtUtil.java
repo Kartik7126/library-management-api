@@ -3,6 +3,7 @@ package com.library.library_api.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -14,11 +15,13 @@ import static org.springframework.security.config.Elements.JWT;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET = "library-api-secret-key-2026-kartik-pict-pune-secure";
+    @Value("${jwt.secret}")
+    private String secret;
+
     private static final long EXPIRATION = 1000 * 60 * 60 * 24;
 
-    private SecretKey getSigningKey(){
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String generateToken(String username,String role){
